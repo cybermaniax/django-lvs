@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+
+{% block page-title %}LVS Dashboard{% endblock %}
+{% block content-title %}LVS Dashboard{% endblock %}
+
+
+{% block page-content%}
+<div id="sum_box" class="row mbl">
+     <div class="col-sm-6 col-md-3">
+         <div class="panel profit db mbm">
+             <div class="panel-body">
+                 <p class="icon">
+                     <i class="icon fa fa-signal"></i>
+                 </p>
+                 <h4 class="value">
+                     <span id="mem_usage_box">{{ mem_perc_use }}</span><span>%</span></h4>
+                 <p class="description">
+                     Memory Usage</p>
+                 <div class="progress progress-sm mbn">
+                     <div id="mem_usage_progressbar_box" role="progressbar" aria-valuenow="{{ mem_perc_use }}" aria-valuemin="0" aria-valuemax="100"
+                         style="width: {{ mem_perc_use }}%;" class="progress-bar progress-bar-success">
+                         <span class="sr-only">{{ mem_perc_use }}% Complete (success)</span></div>
+                 </div>
+             </div>
+         </div>
+     </div>
+     <div class="col-sm-6 col-md-3">
+         <div class="panel income db mbm">
+             <div class="panel-body">
+                 <p class="icon">
+                     <i class="icon fa fa-signal"></i>
+                 </p>
+                 <h4 class="value">
+                     <span id="cpu_usage_box">{{ cpu_usage }}</span><span>%</span></h4>
+                 <p class="description">
+                     CPU Usage</p>
+                 <div class="progress progress-sm mbn">
+                     <div id="cpu_usage_progressbar_box" role="progressbar" aria-valuenow="{{ cpu_usage }}" aria-valuemin="0" aria-valuemax="100"
+                         style="width: {{ cpu_usage }}%;" class="progress-bar progress-bar-info">
+                         <span class="sr-only">100% Complete (success)</span></div>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
+
+
+<div class="row mbl">
+    <div class="col-lg-4">
+        <div class="panel">
+            <div class="panel-body">
+                <div class="profile">
+                    <div style="margin-bottom: 15px" class="row">
+                        <div class="col-xs-12 col-sm-12">
+                            <p>
+                                <strong>Hostname: </strong>{{hostname}}</p>
+                            <p>
+                                <strong>Distribution: </strong>{{distname}} {{distname_version}}</p>
+                            <p>
+                                <strong>Uptime: </strong id="uptime">{{uptime}}</p>
+                            <p>
+                                <strong class="mrs">Arch:</strong><span class="label label-green mrs">{{os}}</span><span class="label label-green mrs">{{machine}}</span><span class="label label-green mrs">{{os_release}}</span></p>
+                        </div>
+                    </div>
+                    <div class="row text-center divider">
+                        <div class="col-xs-12 col-sm-4 emphasis">
+                            <h2>
+                                <strong id="loadavg_1m">{{ loadavg_1m }}</strong></h2>
+                            <p>
+                                <small>Loadavg 1 min</small>
+                            </p>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 emphasis">
+                            <h2>
+                                <strong id="loadavg_5m">{{ loadavg_5m }}</strong></h2>
+                            <p>
+                                <small>Loadavg 5 min</small>
+                            </p>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 emphasis">
+                            <h2>
+                                <strong id="loadavg_15m">{{ loadavg_15m }}</strong></h2>
+                            <p>
+                                <small>Loadavg 15 min</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        
+<div class="row mbl">
+    <div class="col-lg-4">
+        <div class="panel">
+            <div class="panel-body">
+               <div class="row">
+                    <div class="col-md-12">
+                        <h4 class="mbm">Server Status</h4>
+                        <span>Memory Usage (<span id="mem_used">{{ mem_used }}</span> MB / {{ mem_total }} MB)
+                        <small class="pull-right text-muted" id="mem_used_perc">{{ mem_perc_use }}%</small>
+                            <div class="progress progress-sm"><div id="mem_progressbar" role="progressbar" aria-valuenow="{{ mem_perc_use }}" aria-valuemin="0" aria-valuemax="100"
+                                    style="width: {{ mem_perc_use }}%;" class="progress-bar progress-bar-blue">
+                                                <span class="sr-only">100% Complete (success)</span></div>
+                            </div>
+                        </span>
+                        <span class="task-item">CPU Usage
+                        <small class="pull-right text-muted" id="cpu_used_perc">{{ cpu_usage }}%</small>
+                            <div class="progress progress-sm"><div id="cpu_progressbar" role="progressbar" aria-valuenow="{{ cpu_usage }}" aria-valuemin="0" aria-valuemax="100"
+                                    style="width: {{ cpu_usage }}%;" class="progress-bar progress-bar-orange">
+                                                <span class="sr-only">100% Complete (success)</span></div>
+                            </div>
+                        </span>
+                    </div>
+               </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-pink">
+    <div class="panel-heading">Network interfaces</div>
+    <div class="panel-body">
+        <table id="nic-table" class="table table-hover table-condensed">
+            <thead>
+            <tr>
+                <th>Nic</th>
+                <th>Bytes-sent</th>
+                <th>Bytes-sent/sec</th>
+                <th>Bytes-recv</th>
+                <th>Bytes-recv/sec</th>
+                <th>Pkts-sent</th>
+                <th>Pkts-sent/sec</th>
+                <th>Pkts-recv</th>
+                <th>Pkts-recv/sec</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block page-footer%}
+    <script type="text/javascript">
+        function bytesToSize(bytes) {
+            var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            if (bytes == 0) return '0';
+                var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+            return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+        };
+    
+        function dashboard(json_data){
+            $('#loadavg_15m').html(json_data.loadavg_15m);
+            $('#loadavg_5m').html(json_data.loadavg_5m);
+            $('#loadavg_1m').html(json_data.loadavg_1m);
+            $('#uptime').html(json_data.uptime);
+            // memory
+            $('#mem_used').html(json_data.mem_used);
+            $('#mem_used_perc').html(json_data.mem_perc_use+'%');
+            $('#mem_progressbar').css('width',json_data.mem_perc_use+'%');
+            $('#mem_progressbar').attr('aria-valuenow',json_data.mem_perc_use);
+            
+            $('#mem_usage_box').html(json_data.mem_perc_use);
+            $('#mem_usage_progressbar_box').css('width',json_data.mem_perc_use+'%');
+            $('#mem_usage_progressbar_box').attr('aria-valuenow',json_data.mem_perc_use);
+            
+            // cpu
+            $('#cpu_used_perc').html(json_data.cpu_usage+'%');
+            $('#cpu_progressbar').css('width',json_data.cpu_usage+'%');
+            $('#cpu_progressbar').css('aria-valuenow',json_data.cpu_usage);
+            
+            $('#cpu_usage_box').html(json_data.cpu_usage);
+            $('#cpu_usage_progressbar_box').css('width',json_data.cpu_usage+'%');
+            $('#cpu_usage_progressbar_box').attr('aria-valuenow',json_data.cpu_usage);
+        }
+    
+    
+        function ajax_dashboard(){
+            $.ajax({url: '{% url 'ipvsstate:ajax.dashboard'%}',
+                    type: 'GET',
+                    dataType: 'json',
+                    timeout: 1000,
+                    success: function(json_data){          
+                                dashboard(json_data);
+                            }
+            });
+          setTimeout(ajax_dashboard, 4000);
+        }
+        //setTimeout(ajax_dashboard, 4000);
+          
+        function nic_table(json_data){
+            $('#nic-table > tbody').empty();
+            for(var name in json_data) {
+                stat_array = json_data[name];
+                 newRow = "<tr>" +
+                            "<td>"+name+"</td>" +
+                            "<td>"+bytesToSize(stat_array[0])+"</td>" +
+                            "<td>"+bytesToSize(stat_array[1])+"</td>" +
+                            "<td>"+bytesToSize(stat_array[2])+"</td>" +
+                            "<td>"+bytesToSize(stat_array[3])+"</td>" +
+                            "<td>"+stat_array[4]+"</td>" +
+                            "<td>"+stat_array[5]+"</td>" +
+                            "<td>"+stat_array[6]+"</td>" +
+                            "<td>"+stat_array[7]+"</td>" +
+                          "</tr>";
+                
+                $('#nic-table > tbody').append(newRow);
+            }
+        }
+        
+        function ajax_nic_table(){
+            $.ajax({url: '{% url 'ipvsstate:ajax.nic_dashboard'%}',
+                    type: 'GET',
+                    dataType: 'json',
+                    timeout: 2000,
+                    success: function(json_data){          
+                        nic_table(json_data);
+                    }
+            });
+          setTimeout(ajax_nic_table, 5000);
+        }
+        
+        ajax_nic_table();
+    </script>
+{% endblock %}
+
