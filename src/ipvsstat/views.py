@@ -31,6 +31,10 @@ def index(request):
     return render(request, 'ipvsstate/index.html',context)
 
 @require_http_methods(["GET"])
+def ipvsadmin_table_content(request):
+    return render(request, 'ipvsstate/ipvsadminboad.html',{'ipvs':ipvs.ipvs()})
+
+@require_http_methods(["GET"])
 def ajax_dashboard(request):
     return JsonResponse(__dashboardData())
 

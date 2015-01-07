@@ -61,33 +61,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for val in ipvs %}
-                        <tr class="{% cycle 'success' 'warning' %}">
-                            <td colspan="6">
-                                {{val.port}}
-                                {{val.mode}}
-                                {{val.persistent}}
-                                {{val.persistent_timeout}}
-                                {{val.flags}}
-                            </td>
-                        </tr>
-                        {% for rse in val.realserv %}
-                            <tr>
-                                <td></td>
-                                <td>{{rse.ip}}:{{rse.port}}</td>
-                                <td>{{rse.forward_mode}}</td>
-                                <td style="text-align: center;">{{rse.weight}}</td>
-                                <td style="text-align: right;">{{rse.active_conn}}</td>
-                                <td style="text-align: right;">{{rse.inact_conn}}</td>
-                            </tr>
-                            {% empty %}
-                                <tr>
-                                <td colspan="6">
-                                    No servers
-                                </td>
-                                </tr>
-                        {% endfor %}
-                    {% endfor %}
+                        {% include "ipvsstate/ipvsadminboad.html" %}
                     </tbody>
                 </table>
             </div>
@@ -190,6 +164,11 @@
             $('#cpu_usage_progressbar_box').attr('aria-valuenow',json_data.cpu_usage);
         }
     
+        function ipvsadmin_table(){
+            $('#ipvs-table > tbody').load('{% url 'ipvsstate:content.ipvsadm.table'%}')
+            setTimeout(ipvsadmin_table, 2000);
+        }
+        setTimeout(ipvsadmin_table, 2000);
     
         function ajax_dashboard(){
             $.ajax({url: '{% url 'ipvsstate:ajax.dashboard'%}',
