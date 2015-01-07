@@ -44,85 +44,9 @@
      </div>
  </div>
 
-
 <div class="row mbl">
-    <div class="col-lg-4">
-        <div class="panel">
-            <div class="panel-body">
-                <div class="profile">
-                    <div style="margin-bottom: 15px" class="row">
-                        <div class="col-xs-12 col-sm-12">
-                            <p>
-                                <strong>Hostname: </strong>{{hostname}}</p>
-                            <p>
-                                <strong>Distribution: </strong>{{distname}} {{distname_version}}</p>
-                            <p>
-                                <strong>Uptime: </strong id="uptime">{{uptime}}</p>
-                            <p>
-                                <strong class="mrs">Arch:</strong><span class="label label-green mrs">{{os}}</span><span class="label label-green mrs">{{machine}}</span><span class="label label-green mrs">{{os_release}}</span></p>
-                        </div>
-                    </div>
-                    <div class="row text-center divider">
-                        <div class="col-xs-12 col-sm-4 emphasis">
-                            <h2>
-                                <strong id="loadavg_1m">{{ loadavg_1m }}</strong></h2>
-                            <p>
-                                <small>Loadavg 1 min</small>
-                            </p>
-                        </div>
-                        <div class="col-xs-12 col-sm-4 emphasis">
-                            <h2>
-                                <strong id="loadavg_5m">{{ loadavg_5m }}</strong></h2>
-                            <p>
-                                <small>Loadavg 5 min</small>
-                            </p>
-                        </div>
-                        <div class="col-xs-12 col-sm-4 emphasis">
-                            <h2>
-                                <strong id="loadavg_15m">{{ loadavg_15m }}</strong></h2>
-                            <p>
-                                <small>Loadavg 15 min</small>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-        
-<div class="row mbl">
-    <div class="col-lg-4">
-        <div class="panel">
-            <div class="panel-body">
-               <div class="row">
-                    <div class="col-md-12">
-                        <h4 class="mbm">Server Status</h4>
-                        <span>Memory Usage (<span id="mem_used">{{ mem_used }}</span> MB / {{ mem_total }} MB)
-                        <small class="pull-right text-muted" id="mem_used_perc">{{ mem_perc_use }}%</small>
-                            <div class="progress progress-sm"><div id="mem_progressbar" role="progressbar" aria-valuenow="{{ mem_perc_use }}" aria-valuemin="0" aria-valuemax="100"
-                                    style="width: {{ mem_perc_use }}%;" class="progress-bar progress-bar-blue">
-                                                <span class="sr-only">100% Complete (success)</span></div>
-                            </div>
-                        </span>
-                        <span class="task-item">CPU Usage
-                        <small class="pull-right text-muted" id="cpu_used_perc">{{ cpu_usage }}%</small>
-                            <div class="progress progress-sm"><div id="cpu_progressbar" role="progressbar" aria-valuenow="{{ cpu_usage }}" aria-valuemin="0" aria-valuemax="100"
-                                    style="width: {{ cpu_usage }}%;" class="progress-bar progress-bar-orange">
-                                                <span class="sr-only">100% Complete (success)</span></div>
-                            </div>
-                        </span>
-                    </div>
-               </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="row mbl">
-    <div class="col-lg-4">
-        <div class="panel panel-pink">
+ <div class="col-lg-5">
+        <div class="panel panel-green">
             <div class="panel-heading">Ipvsadmin</div>
             <div class="panel-body">
                 <table id="ipvs-table" class="table table-hover table-condensed">
@@ -169,7 +93,52 @@
             </div>
         </div>
     </div>
+
+    <div class="col-lg-4">
+        <div class="panel">
+            <div class="panel-body">
+                <div class="profile">
+                    <div style="margin-bottom: 15px" class="row">
+                        <div class="col-xs-12 col-sm-12">
+                            <p>
+                                <strong>Hostname: </strong>{{hostname}}</p>
+                            <p>
+                                <strong>Distribution: </strong>{{distname}} {{distname_version}}</p>
+                            <p>
+                                <strong>Uptime: </strong id="uptime">{{uptime}}</p>
+                            <p>
+                                <strong class="mrs">Arch:</strong><span class="label label-green mrs">{{os}}</span><span class="label label-green mrs">{{machine}}</span><span class="label label-green mrs">{{os_release}}</span></p>
+                        </div>
+                    </div>
+                    <div class="row text-center divider">
+                        <div class="col-xs-12 col-sm-4 emphasis">
+                            <h2>
+                                <strong id="loadavg_1m">{{ loadavg_1m }}</strong></h2>
+                            <p>
+                                <small>Loadavg 1 min</small>
+                            </p>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 emphasis">
+                            <h2>
+                                <strong id="loadavg_5m">{{ loadavg_5m }}</strong></h2>
+                            <p>
+                                <small>Loadavg 5 min</small>
+                            </p>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 emphasis">
+                            <h2>
+                                <strong id="loadavg_15m">{{ loadavg_15m }}</strong></h2>
+                            <p>
+                                <small>Loadavg 15 min</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+        
 
 <div class="row mbl">
     <div class="col-lg-4">
@@ -210,21 +179,12 @@
             $('#loadavg_5m').html(json_data.loadavg_5m);
             $('#loadavg_1m').html(json_data.loadavg_1m);
             $('#uptime').html(json_data.uptime);
-            // memory
-            $('#mem_used').html(json_data.mem_used);
-            $('#mem_used_perc').html(json_data.mem_perc_use+'%');
-            $('#mem_progressbar').css('width',json_data.mem_perc_use+'%');
-            $('#mem_progressbar').attr('aria-valuenow',json_data.mem_perc_use);
-            
+            // memory           
             $('#mem_usage_box').html(json_data.mem_perc_use);
             $('#mem_usage_progressbar_box').css('width',json_data.mem_perc_use+'%');
             $('#mem_usage_progressbar_box').attr('aria-valuenow',json_data.mem_perc_use);
             
-            // cpu
-            $('#cpu_used_perc').html(json_data.cpu_usage+'%');
-            $('#cpu_progressbar').css('width',json_data.cpu_usage+'%');
-            $('#cpu_progressbar').css('aria-valuenow',json_data.cpu_usage);
-            
+            // cpu            
             $('#cpu_usage_box').html(json_data.cpu_usage);
             $('#cpu_usage_progressbar_box').css('width',json_data.cpu_usage+'%');
             $('#cpu_usage_progressbar_box').attr('aria-valuenow',json_data.cpu_usage);
