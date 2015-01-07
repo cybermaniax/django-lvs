@@ -3,7 +3,7 @@ from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 
 from ipvsstat.lvs import platform_info
-from ipvsstat.lvs import mem
+from ipvsstat.lvs import mem,ipvs
 import ipvsstat.lvs as lvs
 
 def __dashboardData():
@@ -22,7 +22,8 @@ def __dashboardData():
                 'mem_perc_use':mem_info[0],
                 'mem_used':mem_info[1],
                 'mem_total':mem_info[2],
-                'cpu_usage':lvs.cpu_usage_total()}
+                'cpu_usage':lvs.cpu_usage_total(),
+                'ipvs':ipvs.ipvs(),}
 
 @require_http_methods(["GET", "POST"])
 def index(request):

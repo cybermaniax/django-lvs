@@ -119,30 +119,29 @@
     </div>
 </div>
 
-<div class="panel panel-pink">
-    <div class="panel-heading">Network interfaces</div>
-    <div class="panel-body">
-        <table id="nic-table" class="table table-hover table-condensed">
-            <thead>
-            <tr>
-                <th>Nic</th>
-                <th>Bytes-sent</th>
-                <th>Bytes-sent/sec</th>
-                <th>Bytes-recv</th>
-                <th>Bytes-recv/sec</th>
-                <th>Pkts-sent</th>
-                <th>Pkts-sent/sec</th>
-                <th>Pkts-recv</th>
-                <th>Pkts-recv/sec</th>
-            </tr>
-            </thead>
-            <tbody>
-                <tr></tr>
-            </tbody>
-        </table>
+<div class="row mbl">
+    <div class="col-lg-4">
+        <div class="panel panel-pink">
+            <div class="panel-heading">Network interfaces</div>
+            <div class="panel-body">
+                <table id="nic-table" class="table table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th>Nic</th>
+                        <th>Bytes-sent</th>
+                        <th>Bytes-recv</th>
+                        <th>Bytes-sent/sec</th>
+                        <th>Bytes-recv/sec</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
-
 {% endblock %}
 
 {% block page-footer%}
@@ -191,7 +190,7 @@
             });
           setTimeout(ajax_dashboard, 4000);
         }
-        //setTimeout(ajax_dashboard, 4000);
+        setTimeout(ajax_dashboard, 4000);
           
         function nic_table(json_data){
             $('#nic-table > tbody').empty();
@@ -200,13 +199,9 @@
                  newRow = "<tr>" +
                             "<td>"+name+"</td>" +
                             "<td>"+bytesToSize(stat_array[0])+"</td>" +
-                            "<td>"+bytesToSize(stat_array[1])+"</td>" +
                             "<td>"+bytesToSize(stat_array[2])+"</td>" +
+                            "<td>"+bytesToSize(stat_array[1])+"</td>" +
                             "<td>"+bytesToSize(stat_array[3])+"</td>" +
-                            "<td>"+stat_array[4]+"</td>" +
-                            "<td>"+stat_array[5]+"</td>" +
-                            "<td>"+stat_array[6]+"</td>" +
-                            "<td>"+stat_array[7]+"</td>" +
                           "</tr>";
                 
                 $('#nic-table > tbody').append(newRow);

@@ -1,0 +1,10 @@
+IP Virtual Server version 1.2.1 (size=4096)
+Prot LocalAddress:Port Scheduler Flags
+  -> RemoteAddress:Port Forward Weight ActiveConn InActConn
+TCP  C0A87B7B:1234 lblc  
+  -> C0A87BBD:1234      Masq    54     0          0         
+FWM  00000050 lc persistent 150000 FFFFFFFF
+  -> C0A87BBD:0001      Route   51     1          3
+  -> C0A87B0D:0002      Route   52     2          2
+  -> C8C8C8C8:6666      Route   53     3          1
+  -> C0A87B0D:6666      Route   53     3          1
