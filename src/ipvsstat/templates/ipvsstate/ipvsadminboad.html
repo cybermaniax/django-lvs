@@ -1,11 +1,7 @@
 {% for val in ipvs%}
     <tr class="{% cycle 'success' 'warning' %}">
         <td colspan="6">
-            {{val.port}}
-            {{val.mode}}
-            {{val.persistent}}
-            {{val.persistent_timeout}}
-            {{val.flags}}
+            {{val.port}} {{val.mode}} {{val.persistent}} {{val.persistent_timeout}} {{val.flags}}
         </td>
     </tr>
     {% for rse in val.realserv|dictsort:"ip"%}
