@@ -76,3 +76,6 @@ TEMPLATE_CONTEXT_PROCESSORS = ('django.contrib.auth.context_processors.auth',
     'django.core.context_processors.request',
     'django.core.context_processors.static',
     'djangolvs.menu.menu_context_processor')
+
+IP_VS_FILE = '/proc/net/ip_vs'
+IP_VS_STAT_FILE = '/proc/net/ip_vs_stats'

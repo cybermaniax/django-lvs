@@ -27,3 +27,6 @@ DATABASES = {
     }
 }
 
+IP_VS_FILE = '../unittest/resource/ip_vs_2'
+IP_VS_STAT_FILE = '../unittest/resource/ip_vs_stats'
+
