@@ -5,5 +5,6 @@ from django.views.generic import RedirectView
 urlpatterns = patterns('',
     url(r'^$', RedirectView.as_view(url='/ipvsstat/')),
     url(r'^ipvsstat/', include('ipvsstat.urls',namespace="ipvsstate")),
+    url(r'^ipvsadmin/', include('ipvsadmin.urls',namespace="ipvsadmin")),
     url(r'^admin/', include(admin.site.urls)),
 )

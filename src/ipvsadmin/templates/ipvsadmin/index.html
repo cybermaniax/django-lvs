@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block page-title %}LVS Admin{% endblock %}
+{% block content-title %}LVS Admin{% endblock %}
+
+
+{% block page-content%}
+
+<div class="row mbl">
+    <div class="col-lg-5">
+        <div class="panel panel-green">
+            <div class="panel-heading">Ipvsadmin</div>
+            <div class="panel-body">
+                <table id="ipvs-table" class="table table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th>IpVs</th>
+                        <th>IP</th>
+                        <th>Mode</th>
+                        <th>Weight</th>
+                        <th>ActiveConn</th>
+                        <th>InActConn</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% include "ipvsstate/ipvsadminboad.html" %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block page-footer%}
+
+{% endblock %}
+

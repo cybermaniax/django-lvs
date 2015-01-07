@@ -1,5 +1,4 @@
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
 from base import *
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -14,7 +13,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-PROJECT_APPS = ('ipvsstat',);
+PROJECT_APPS = ('ipvsstat','ipvsadmin',);
 
 
 INSTALLED_APPS = PREREQ_APPS + PROJECT_APPS

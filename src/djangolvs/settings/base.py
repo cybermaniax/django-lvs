@@ -7,9 +7,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '#gj-ahp&b@@0p-8&lbor4^189=wox46g#a!h9$3l5+-x#1y&4!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -29,7 +29,7 @@ PREREQ_APPS = (
 )
 
 
-PROJECT_APPS = ('ipvsstat',)
+PROJECT_APPS = ('ipvsstat','ipvsadmin',)
 
 INSTALLED_APPS = PREREQ_APPS + PROJECT_APPS
 
