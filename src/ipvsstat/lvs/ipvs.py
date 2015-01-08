@@ -84,7 +84,8 @@ def _parce_to_ip(hexip):
 def _parce_to_port(hexip):
     splited_hexip = hexip.split(':')
     v = splited_hexip[1].lstrip('0')
-    return [v,'0'][len(v) <= 0] 
+    v = [v,'0'][len(v) <= 0] 
+    return str(_hexToInt(v))
 
 class VirtualEndPoint(object):
 
@@ -99,7 +100,7 @@ class VirtualEndPoint(object):
         else:
             self.persistent,self.persistent_timeout,self.flags = '','',''
         self.__real_servers = []
-        if 'TCP' == self.mode:
+        if 'TCP' == self.mode or 'UDP' == self.mode:
             self.port = _parce_to_ip(self.port)+':'+_parce_to_port(self.port)
         elif 'FWM' == self.mode:
             self.port = str(_hexToInt(self.port))

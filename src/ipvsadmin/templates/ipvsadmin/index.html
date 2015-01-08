@@ -5,9 +5,33 @@
 
 
 {% block page-content%}
+<!--BEGIN MODAL CONFIG PORTLET-->
+<div id="modal-config" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="close">
+                    &times;</button>
+                <h4 class="modal-title">
+                    Confirm the deletion</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    You sure you want to delete?<br/><span id="modal-body-footer"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    Close</button>
+                <button id="modal-button-delete" type="button" class="btn btn-danger">
+                    Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--END MODAL CONFIG PORTLET-->
 
 <div class="row mbl">
-    <div class="col-lg-5">
+    <div class="col-lg-6">
         <div class="panel panel-green">
             <div class="panel-heading">Ipvsadmin</div>
             <div class="panel-body">
@@ -18,18 +42,18 @@
                         <th>IP</th>
                         <th>Mode</th>
                         <th>Weight</th>
-                        <th>ActiveConn</th>
-                        <th>InActConn</th>
+                        <th/>
                     </tr>
                     </thead>
                     <tbody>
-                        {% include "ipvsstate/ipvsadminboad.html" %}
+                        {% include "ipvsadmin/ipvsadminboad.html" %}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
 <div class="row">
     <div class="col-lg-6">
         <div class="note note-warning"><h4 class="box-heading">Warning! Do not use this tool if you use keepalived</h4>
@@ -39,6 +63,39 @@
 {% endblock %}
 
 {% block page-footer%}
+<script>
+    $('#modal-config').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget)
+        var mode = button.data('mode') 
+        var port = button.data('port') 
+        var modal = $(this)
+        modal.find('.modal-body #modal-body-footer').text('Mode: '+mode+' Address:'+port)
+        modal.find('.modal-footer #modal-button-delete').attr('data-mode',mode)
+        modal.find('.modal-footer #modal-button-delete').attr('data-port',port)
+    })
+    
+    $('.modal-footer #modal-button-delete').on('mousedown', function (event) {
+        var button = $('.modal-footer #modal-button-delete')
+        var mode = button.attr('data-mode')
+        var port = button.attr('data-port')
+        $.ajax({url: '/ipvsadmin/ajax/deletevs/'+mode+'/'+port,
+            type: 'GET',
+                    dataType: 'json',
+                    timeout: 2000,
+                    success: function(json_data){
+                        $('#messages').empty()          
+                        message_info('Virtual server has been removed.') 
+                        $('#ipvs-table > tbody').load('{% url 'ipvsadmin:content.ipvsadm.table'%}')
+                    },
+                    error: function(){
+                        $('#messages').empty()           
+                        message_error('Some problem with server. Try again') 
+                        $('#ipvs-table > tbody').load('{% url 'ipvsadmin:content.ipvsadm.table'%}')
+                    }
+            });                                                                   
+        $('#modal-config').modal('hide');
+    })
+</script>
 
 {% endblock %}
 

@@ -1,7 +1,12 @@
 {% for val in ipvs%}
     <tr class="{% cycle 'success' 'warning' %}">
-        <td colspan="6">
+        <td colspan="4">
             {{val.port}} {{val.mode}} {{val.persistent}} {{val.persistent_timeout}} {{val.flags}}
+        </td>
+        <td style="text-align: right;">
+            <a href="#">
+                <i class="fa fa-trash-o fa-fw" data-toggle="modal" data-target="#modal-config" data-mode="{{val.mode}}" data-port="{{val.port}}"></i>
+            </a>
         </td>
     </tr>
     {% for rse in val.realserv|dictsort:"ip"%}
@@ -10,19 +15,18 @@
             <td>{{rse.ip}}:{{rse.port}}</td>
             <td>{{rse.forward_mode}}</td>
             <td style="text-align: center;">{{rse.weight}}</td>
-            <td style="text-align: right;">{{rse.active_conn}}</td>
-            <td style="text-align: right;">{{rse.inact_conn}}</td>
+            <td style="text-align: right;">DEL</td>
         </tr>
         {% empty %}
             <tr>
-            <td colspan="6">
+            <td colspan="5">
                 No servers
             </td>
             </tr>
     {% endfor %}
     {% empty %}
         <tr>
-        <td colspan="6">
+        <td colspan="5">
             No servers
         </td>
         </tr>
