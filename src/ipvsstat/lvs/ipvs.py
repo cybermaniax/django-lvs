@@ -3,7 +3,7 @@ Created on 18 gru 2014
 
 @author: ghalajko
 '''
-from _ctypes import Array
+from django.conf import settings
 
 __lvs_version = None
 
@@ -11,19 +11,12 @@ import string
 import os.path
 
 
-if os.environ.has_key("DEV"):
-    _IP_VS_FILE = '../unittest/resource/ip_vs_2'
-    _IP_VS_STAT_FILE = '../unittest/resource/ip_vs_stats'
-else:
-    _IP_VS_FILE = '/proc/net/ip_vs'
-    _IP_VS_STAT_FILE = '/proc/net/ip_vs_stats'
-
-if not os.path.isfile(_IP_VS_FILE):
-    raise RuntimeError("LVS is disabled. File \'"+os.path.abspath(_IP_VS_FILE)+"\' not found.")
+if not os.path.isfile(settings.IP_VS_FILE):
+    raise RuntimeError("LVS is disabled. File \'"+os.path.abspath(settings.IP_VS_FILE)+"\' not found.")
 
 def ip_vs_stat():
     ipvs = []
-    with open(_IP_VS_STAT_FILE, 'rb') as f:
+    with open(settings.IP_VS_STAT_FILE, 'rb') as f:
         for line in f:
             ipvs += [' '+line]
     return ipvs
@@ -54,7 +47,7 @@ def ipvs():
 def ip_vs_parse():
     global __lvs_version
     v_endpoints = []
-    with open(_IP_VS_FILE, 'rb') as f:
+    with open(settings.IP_VS_FILE, 'rb') as f:
         if __lvs_version is None:
             __lvs_version = f.readline()
         else:
@@ -91,7 +84,8 @@ def _parce_to_ip(hexip):
 def _parce_to_port(hexip):
     splited_hexip = hexip.split(':')
     v = splited_hexip[1].lstrip('0')
-    return [v,'0'][len(v) <= 0] 
+    v = [v,'0'][len(v) <= 0] 
+    return str(_hexToInt(v))
 
 class VirtualEndPoint(object):
 
@@ -106,7 +100,7 @@ class VirtualEndPoint(object):
         else:
             self.persistent,self.persistent_timeout,self.flags = '','',''
         self.__real_servers = []
-        if 'TCP' == self.mode:
+        if 'TCP' == self.mode or 'UDP' == self.mode:
             self.port = _parce_to_ip(self.port)+':'+_parce_to_port(self.port)
         elif 'FWM' == self.mode:
             self.port = str(_hexToInt(self.port))

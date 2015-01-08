@@ -60,8 +60,12 @@
                      <div class="clearfix"></div>
                      {% block side-menu %}
                         {% for menu_item in MENU_ITEMS %}
-                            <li class="active"><a href="{{menu_item.url}}"><i class="fa fa-tachometer fa-fw">
-                            <div class="icon-bg bg-orange"></div>
+                            <li
+                            {% if menu_item.url in request.path %}
+                                class="active"
+                            {% endif %}
+                            ><a href="{{menu_item.url}}"><i class="fa fa-tachometer fa-fw">
+                                <div class="icon-bg bg-orange"></div>
                             </i><span class="menu-title">{{ menu_item.title }}</span></a></li>
                         {% endfor %}
                      {% endblock %}                     
@@ -88,12 +92,11 @@
                 </div>
                 <!--END TITLE & BREADCRUMB PAGE-->
                 <!--BEGIN CONTENT-->
-                <div class="page-content">
-                    <div id="tab-general">
+                <div id="page-content" class="page-content">
+                    <div id="messages"></div>                                   
                     {% block page-content %}
 		    
-		    {% endblock %} 
-                    </div>
+		            {% endblock %} 
                 </div>
                 <!--END CONTENT-->
                 <!--BEGIN FOOTER-->
