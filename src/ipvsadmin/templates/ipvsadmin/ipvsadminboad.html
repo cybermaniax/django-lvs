@@ -15,7 +15,13 @@
             <td>{{rse.ip}}:{{rse.port}}</td>
             <td>{{rse.forward_mode}}</td>
             <td style="text-align: center;">{{rse.weight}}</td>
-            <td style="text-align: right;">DEL</td>
+            <td style="text-align: right;">
+                <a href="#">
+                    <i class="fa fa-trash-o fa-fw" data-toggle="modal" data-target="#modal-config" 
+                    data-mode="{{val.mode}}" data-port="{{val.port}}"
+                    data-realserver="{{rse.ip}}:{{rse.port}}"></i>
+                </a>
+            </td>
         </tr>
         {% empty %}
             <tr>

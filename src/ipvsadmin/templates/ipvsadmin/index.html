@@ -65,34 +65,70 @@
 {% block page-footer%}
 <script>
     $('#modal-config').on('show.bs.modal', function (event) {
+        var modal = $(this)                                                    
+        var targetButton = $('.modal-footer #modal-button-delete')
+                                                         
         var button = $(event.relatedTarget)
         var mode = button.data('mode') 
         var port = button.data('port') 
-        var modal = $(this)
-        modal.find('.modal-body #modal-body-footer').text('Mode: '+mode+' Address:'+port)
-        modal.find('.modal-footer #modal-button-delete').attr('data-mode',mode)
-        modal.find('.modal-footer #modal-button-delete').attr('data-port',port)
+        var realserv = button.data('realserver') 
+        
+        // clone data
+        targetButton.data('mode',mode)
+        targetButton.data('port',port)
+        
+        var txt = 'Mode: '+mode+' Address:'+port
+        if(null != realserv){
+            txt += ' Real server: '+realserv
+            
+           targetButton.data('realserver',realserv)
+        }else{
+           targetButton.data('realserver',null) 
+        }
+        
+        modal.find('.modal-body #modal-body-footer').text(txt)        
     })
     
     $('.modal-footer #modal-button-delete').on('mousedown', function (event) {
-        var button = $('.modal-footer #modal-button-delete')
-        var mode = button.attr('data-mode')
-        var port = button.attr('data-port')
-        $.ajax({url: '/ipvsadmin/ajax/deletevs/'+mode+'/'+port,
-            type: 'GET',
-                    dataType: 'json',
-                    timeout: 2000,
-                    success: function(json_data){
-                        $('#messages').empty()          
-                        message_info('Virtual server has been removed.') 
-                        $('#ipvs-table > tbody').load('{% url 'ipvsadmin:content.ipvsadm.table'%}')
-                    },
-                    error: function(){
-                        $('#messages').empty()           
-                        message_error('Some problem with server. Try again') 
-                        $('#ipvs-table > tbody').load('{% url 'ipvsadmin:content.ipvsadm.table'%}')
-                    }
-            });                                                                   
+        var targetButton = $('.modal-footer #modal-button-delete')       
+        var mode = targetButton.data('mode')
+        var port = targetButton.data('port')
+        var realserv = targetButton.data('realserver')
+        
+        if(null == realserv){ 
+            $.ajax({url: '/ipvsadmin/ajax/deletevs/'+mode+'/'+port,
+                type: 'GET',
+                        dataType: 'json',
+                        timeout: 2000,
+                        success: function(json_data){
+                            $('#messages').empty()          
+                            message_info('Virtual server has been removed.') 
+                            $('#ipvs-table > tbody').load('{% url 'ipvsadmin:content.ipvsadm.table'%}')
+                        },
+                        error: function(){
+                            $('#messages').empty()           
+                            message_error('Some problem with server. Try again') 
+                            $('#ipvs-table > tbody').load('{% url 'ipvsadmin:content.ipvsadm.table'%}')
+                        }
+                }); 
+        }else{
+             $.ajax({url: '/ipvsadmin/ajax/deleterealserv/'+mode+'/'+port+'/'+realserv,
+                type: 'GET',
+                        dataType: 'json',
+                        timeout: 2000,
+                        success: function(json_data){
+                            $('#messages').empty()          
+                            message_info('Server has been removed.') 
+                            $('#ipvs-table > tbody').load('{% url 'ipvsadmin:content.ipvsadm.table'%}')
+                        },
+                        error: function(){
+                            $('#messages').empty()           
+                            message_error('Some problem with server. Try again') 
+                            $('#ipvs-table > tbody').load('{% url 'ipvsadmin:content.ipvsadm.table'%}')
+                        }
+                });    
+        
+        }                                                                  
         $('#modal-config').modal('hide');
     })
 </script>
