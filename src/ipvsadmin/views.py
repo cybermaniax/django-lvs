@@ -27,6 +27,15 @@ def ajax_delete_real_server(request,mode,port,realserver):
     return JsonResponse({'return':'OK'})
 
 @require_http_methods(["GET"])
+def ajax_weight(request,mode,port,realserver,weight,realsmode):
+    if not ipvsadm.ipvadmin_exists():
+        return HttpResponseServerError('<h1>Command ipvsadm not found</h1>')
+    if 0 != ipvsadm.weight_real_server(mode, port,realserver,weight,realsmode.upper()):
+        return HttpResponseServerError('<h1>Error with ipvsadm execution</h1>')
+    return JsonResponse({'return':'OK'})
+
+
+@require_http_methods(["GET"])
 def ipvsadmin_table_content(request):
     return render(request, 'ipvsadmin/ipvsadminboad.html',{'ipvs':ipvs.ipvs()})
 

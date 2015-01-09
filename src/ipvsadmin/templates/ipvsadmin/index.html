@@ -64,6 +64,38 @@
 
 {% block page-footer%}
 <script>
+    function refrash_ipvstable_contenet() {
+        $('#ipvs-table > tbody').load('{% url 'ipvsadmin:content.ipvsadm.table'%}', function() {
+            $('#ipvs-table > tbody > tr > td > a > i[data-weight]').on('click', button_weight_change)
+        })  
+    }
+    
+    // bind event to img
+    $('#ipvs-table > tbody > tr > td > a > i[data-weight]').on('click', button_weight_change)
+    function button_weight_change(event) {
+        var button = $(this)   
+        var mode = button.data('mode') 
+        var port = button.data('port') 
+        var realserv = button.data('realserver')
+        var weight = button.data('weight')
+        var realsmode = button.data('realsmode')
+        
+        $.ajax({url: '/ipvsadmin/ajax/weight/'+mode+'/'+port+'/'+realserv+'/'+weight+'/'+realsmode,
+        type: 'GET',
+                dataType: 'json',
+                timeout: 2000,
+                success: function(json_data){
+                    $('#messages').empty()          
+                    refrash_ipvstable_contenet()
+                },
+                error: function(){
+                    $('#messages').empty()           
+                    message_error('Some problem with server. Try again') 
+                    refrash_ipvstable_contenet()
+                }
+        })
+    }
+
     $('#modal-config').on('show.bs.modal', function (event) {
         var modal = $(this)                                                    
         var targetButton = $('.modal-footer #modal-button-delete')
@@ -103,12 +135,12 @@
                         success: function(json_data){
                             $('#messages').empty()          
                             message_info('Virtual server has been removed.') 
-                            $('#ipvs-table > tbody').load('{% url 'ipvsadmin:content.ipvsadm.table'%}')
+                            refrash_ipvstable_contenet()
                         },
                         error: function(){
                             $('#messages').empty()           
                             message_error('Some problem with server. Try again') 
-                            $('#ipvs-table > tbody').load('{% url 'ipvsadmin:content.ipvsadm.table'%}')
+                            refrash_ipvstable_contenet()
                         }
                 }); 
         }else{
@@ -119,12 +151,12 @@
                         success: function(json_data){
                             $('#messages').empty()          
                             message_info('Server has been removed.') 
-                            $('#ipvs-table > tbody').load('{% url 'ipvsadmin:content.ipvsadm.table'%}')
+                            refrash_ipvstable_contenet()
                         },
                         error: function(){
                             $('#messages').empty()           
                             message_error('Some problem with server. Try again') 
-                            $('#ipvs-table > tbody').load('{% url 'ipvsadmin:content.ipvsadm.table'%}')
+                            refrash_ipvstable_contenet()
                         }
                 });    
         

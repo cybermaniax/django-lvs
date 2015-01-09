@@ -124,7 +124,7 @@ class RealServer(object):
         self._ip = _parce_to_ip(args[1])
         self._port = _parce_to_port(args[1])
         self._forward_mode = args[2]
-        self._weight = args[3]
+        self._weight = int(args[3])
         self._active_conn = args[4]
         self._inact_conn = args[5]
 
