@@ -14,6 +14,12 @@ import os.path
 if not os.path.isfile(settings.IP_VS_FILE):
     raise RuntimeError("LVS is disabled. File \'"+os.path.abspath(settings.IP_VS_FILE)+"\' not found.")
 
+def isExist_virtual_server(port):
+    for vsr in ip_vs_parse():
+        if port in vsr.port:
+            return True
+    return False
+
 def ip_vs_stat():
     ipvs = []
     with open(settings.IP_VS_STAT_FILE, 'rb') as f:
@@ -95,7 +101,7 @@ class VirtualEndPoint(object):
         self.scheduler = args[2]
         if 3 < len(args):
             self.persistent = args[3]
-            self.persistent_timeout = args[4]
+            self.persistent_timeout = int(args[4])/1000 # msec to sec
             self.flags = args[5]
         else:
             self.persistent,self.persistent_timeout,self.flags = '','',''

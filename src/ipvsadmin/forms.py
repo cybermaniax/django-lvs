@@ -6,6 +6,7 @@ Created on 9 sty 2015
 
 from django import forms
 from django.core.validators  import validate_ipv46_address
+from ipvsstat.lvs import ipvs
 
 class MySelect(forms.Select):
    
@@ -56,5 +57,28 @@ class VirtualServerForm(forms.Form):
     scheduler = forms.ChoiceField(choices=_VS_SCHEDULER, required=True, label="Scheduling-method",
                                   widget=MySelect(attrs={'class':'form-control'}))
     
-
+    def clean(self):
+        cleaned_data = super(VirtualServerForm, self).clean()
+        v_type = cleaned_data.get('type')
+        if 'TCP' in v_type or 'UDP' in v_type:
+            v_ip = cleaned_data.get('ip')
+            v_port = cleaned_data.get('port')
+            if not v_ip:
+                self.add_error('ip', 'This field is required.')
+            if not v_port:
+                self.add_error('port', 'This field is required.')
+                
+            if ipvs.isExist_virtual_server('%s:%s'%(v_ip,v_port)):
+                self.add_error('ip', 'Ip address and port exist')
+            
+        elif 'FWM' in v_type:
+            v_fwmark = cleaned_data.get('fwmark')
+            if not v_fwmark:
+                self.add_error('fwmark', 'This field is required.')
+            if ipvs.isExist_virtual_server(str(v_fwmark)):
+                self.add_error('fwmark', 'Virtual server with this firewall mark exist.')
+        else:
+            raise forms.ValidationError("No supported vs type"
+                        "No supported vs type")
+        
     

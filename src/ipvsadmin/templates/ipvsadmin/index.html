@@ -40,8 +40,8 @@
                         <div class="form-group">
                             <div class="radio">                            
                                 {% for radio in vsform.type%}
-                                    <label for="{{ radio.id_for_label }}" class="radio-inline">
                                     {{ radio.tag }}
+                                    <label for="{{ radio.id_for_label }}" class="radio-inline">
                                     &nbsp;{{ radio.choice_label }}
                                     </label>
                                 {% endfor %}
@@ -67,20 +67,11 @@
                                 </div>
                             </div>
                             <div class="row" id="div_{{vsform.fwmark.id_for_label}}">
-                                <div class="col-md-9">
+                                <div class="col-md-8">
                                     <div class="form-group">
                                         <label for="{{vsform.fwmark.id_for_label}}" class="control-label">{{vsform.fwmark.label}}</label>
                                         {{vsform.fwmark}}
                                         {% include "ipvsadmin/error-div.html" with field=vsform.fwmark only %}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                    <label for="{{vsform.peristtimeout.id_for_label}}" class="control-label">{{vsform.peristtimeout.label}}</label>
-                                    {{vsform.peristtimeout}}
-                                        {% include "ipvsadmin/error-div.html" with field=vsform.peristtimeout only %}
                                     </div>
                                 </div>
                             </div>
@@ -90,6 +81,15 @@
                                     <label for="{{vsform.scheduler.id_for_label}}" class="control-label">{{vsform.scheduler.label}}</label>
                                     {{vsform.scheduler}}
                                         {% include "ipvsadmin/error-div.html" with field=vsform.scheduler only %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                    <label for="{{vsform.peristtimeout.id_for_label}}" class="control-label">{{vsform.peristtimeout.label}}</label>
+                                    {{vsform.peristtimeout}}
+                                        {% include "ipvsadmin/error-div.html" with field=vsform.peristtimeout only %}
                                     </div>
                                 </div>
                             </div>
@@ -140,7 +140,9 @@
 {% endblock %}
 
 {% block page-footer%}
-<script>         
+<script>
+    //$('#div_{{vsform.fwmark.id_for_label}}').hide('slow')
+             
     function refrash_ipvstable_contenet() {
         $('#ipvs-table > tbody').load('{% url 'ipvsadmin:content.ipvsadm.table'%}', function() {
             $('#ipvs-table > tbody > tr > td > a > i[data-weight]').on('click', button_weight_change)
