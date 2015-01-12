@@ -42,9 +42,9 @@ def add_virtual_server(ip,port,fwmark,mode,peristtimeout,scheduler):
     command = [settings.IPVSADMIN,]
     command.append('-A') 
     command.append(__LVS_MODE[mode])
-    if 'TCP' in mode or 'UDP' in mode:
+    if 'TCP' == mode or 'UDP' == mode:
         command.append("%s:%s"%(ip,port))
-    elif 'FWM' in mode:
+    elif 'FWM' == mode:
         command.append(fwmark)
     else:
         raise ValueError('No support %s'%fwmark)

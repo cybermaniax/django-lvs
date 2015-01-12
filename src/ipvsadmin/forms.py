@@ -51,7 +51,7 @@ class VirtualServerForm(forms.Form):
                            min_value=0,
                            widget=forms.TextInput(attrs={'class':'form-control'}))
     
-    type = forms.ChoiceField(choices=__VS_MODE,initial='TCP', required=True, label="Select virtual server type",
+    type = forms.ChoiceField(choices=__VS_MODE, required=True, label="Select virtual server type",
                              widget=forms.RadioSelect)
     
     scheduler = forms.ChoiceField(choices=_VS_SCHEDULER, required=True, label="Scheduling-method",
@@ -60,7 +60,7 @@ class VirtualServerForm(forms.Form):
     def clean(self):
         cleaned_data = super(VirtualServerForm, self).clean()
         v_type = cleaned_data.get('type')
-        if 'TCP' in v_type or 'UDP' in v_type:
+        if 'TCP' == v_type or 'UDP' == v_type:
             v_ip = cleaned_data.get('ip')
             v_port = cleaned_data.get('port')
             if not v_ip:
@@ -71,7 +71,7 @@ class VirtualServerForm(forms.Form):
             if ipvs.isExist_virtual_server('%s:%s'%(v_ip,v_port)):
                 self.add_error('ip', 'Ip address and port exist')
             
-        elif 'FWM' in v_type:
+        elif 'FWM' == v_type:
             v_fwmark = cleaned_data.get('fwmark')
             if not v_fwmark:
                 self.add_error('fwmark', 'This field is required.')

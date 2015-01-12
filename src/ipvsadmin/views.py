@@ -23,6 +23,7 @@ def index(request):
                 messages.error(request, 'Error with ipvsadm execution')
             else:
                 messages.info(request, 'Virtual server added successfully')
+                form = VirtualServerForm()
             
             
         return render(request, 'ipvsadmin/index.html',{'ipvs':ipvs.ipvs(),'vsform':form})

@@ -49,8 +49,8 @@
                             {% include "ipvsadmin/error-div.html" with field=vsform.type only %}
                         </div>
                         <hr />
-                        <div class="form-group" id="div_{{vsform.ip.id_for_label}}">
-                            <div class="row">
+                        <div class="form-group">
+                            <div class="row" id="div_{{vsform.ip.id_for_label}}" style="display: none;">
                                 <div class="col-md-8">
                                     <div class="form-group">
                                         <label for="{{vsform.ip.id_for_label}}" class="control-label">{{vsform.ip.label}}</label>
@@ -66,7 +66,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" id="div_{{vsform.fwmark.id_for_label}}">
+                            <div class="row" id="div_{{vsform.fwmark.id_for_label}}" style="display: none;">
                                 <div class="col-md-8">
                                     <div class="form-group">
                                         <label for="{{vsform.fwmark.id_for_label}}" class="control-label">{{vsform.fwmark.label}}</label>
@@ -140,8 +140,33 @@
 {% endblock %}
 
 {% block page-footer%}
-<script>
-    //$('#div_{{vsform.fwmark.id_for_label}}').hide('slow')
+<script>    
+     $("#add_virtual_server :radio").on('ifChecked',function (event) {
+        if('FWM' == this.value){
+            $('#div_{{vsform.ip.id_for_label}}').hide('slow')
+            $('#div_{{vsform.fwmark.id_for_label}}').show('slow')
+        }else if('TCP' == this.value || 'UDP' == this.value ){
+            $('#div_{{vsform.fwmark.id_for_label}}').hide('slow')
+            $('#div_{{vsform.ip.id_for_label}}').show('slow')
+        }
+    });
+    
+    $( "#add_virtual_server :radio" ).each(function( index ) {
+        switch ($( this ).prop('value')) {
+            case "TCP":
+            case "UDP":
+                if($( this ).prop('checked')){
+                    $('#div_{{vsform.fwmark.id_for_label}}').hide()
+                    $('#div_{{vsform.ip.id_for_label}}').show()
+                }
+                break;
+            case "FWM":
+                if($( this ).prop('checked')){
+                    $('#div_{{vsform.fwmark.id_for_label}}').show()
+                    $('#div_{{vsform.ip.id_for_label}}').hide()
+                }
+        }
+    });     
              
     function refrash_ipvstable_contenet() {
         $('#ipvs-table > tbody').load('{% url 'ipvsadmin:content.ipvsadm.table'%}', function() {
