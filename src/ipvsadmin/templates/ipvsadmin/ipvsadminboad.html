@@ -1,7 +1,7 @@
 {% for val in ipvs%}
     <tr class="{% cycle 'success' 'warning' %}">
         <td colspan="4">
-            {{val.port}} {{val.mode}} {{val.persistent}} {{val.persistent_timeout}} {{val.flags}}
+            {{val.port}} {{val.mode}} {{val.scheduler}} {{val.persistent}} {{val.persistent_timeout}} {{val.flags}}
         </td>
         <td style="text-align: right;">
             <a href="#">

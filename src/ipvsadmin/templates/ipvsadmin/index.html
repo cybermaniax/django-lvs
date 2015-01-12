@@ -29,6 +29,83 @@
     </div>
 </div>
 <!--END MODAL CONFIG PORTLET-->
+<div class="row mbl">
+    <div class="col-lg-6">
+        <div class="panel panel-grey">
+            <div class="panel-heading">Add virtual server</div>
+            <div class="panel-body pan">
+                <form id="add_virtual_server" method="post" action="{% url 'ipvsadmin:index'%}">
+                    {% csrf_token %}
+                    <div class="form-body pal">
+                        <div class="form-group">
+                            <div class="radio">                            
+                                {% for radio in vsform.type%}
+                                    <label for="{{ radio.id_for_label }}" class="radio-inline">
+                                    {{ radio.tag }}
+                                    &nbsp;{{ radio.choice_label }}
+                                    </label>
+                                {% endfor %}
+                            </div>
+                            {% include "ipvsadmin/error-div.html" with field=vsform.type only %}
+                        </div>
+                        <hr />
+                        <div class="form-group" id="div_{{vsform.ip.id_for_label}}">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label for="{{vsform.ip.id_for_label}}" class="control-label">{{vsform.ip.label}}</label>
+                                        {{vsform.ip}}
+                                        {% include "ipvsadmin/error-div.html" with field=vsform.ip only %}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                    <label for="{{vsform.port.id_for_label}}" class="control-label">{{vsform.port.label}}</label>
+                                    {{vsform.port}}
+                                    {% include "ipvsadmin/error-div.html" with field=vsform.port only %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="div_{{vsform.fwmark.id_for_label}}">
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <label for="{{vsform.fwmark.id_for_label}}" class="control-label">{{vsform.fwmark.label}}</label>
+                                        {{vsform.fwmark}}
+                                        {% include "ipvsadmin/error-div.html" with field=vsform.fwmark only %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                    <label for="{{vsform.peristtimeout.id_for_label}}" class="control-label">{{vsform.peristtimeout.label}}</label>
+                                    {{vsform.peristtimeout}}
+                                        {% include "ipvsadmin/error-div.html" with field=vsform.peristtimeout only %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                    <label for="{{vsform.scheduler.id_for_label}}" class="control-label">{{vsform.scheduler.label}}</label>
+                                    {{vsform.scheduler}}
+                                        {% include "ipvsadmin/error-div.html" with field=vsform.scheduler only %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions text-right pal">
+                        <button type="submit" class="btn btn-primary">
+                            Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div class="row mbl">
     <div class="col-lg-6">
@@ -54,7 +131,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row mbl">
     <div class="col-lg-6">
         <div class="note note-warning"><h4 class="box-heading">Warning! Do not use this tool if you use keepalived</h4>
         <p>Keepalived modifies LVS. Any changes made by this interface could be automatically modified by Keepalived.</p></div>
@@ -63,7 +140,7 @@
 {% endblock %}
 
 {% block page-footer%}
-<script>
+<script>         
     function refrash_ipvstable_contenet() {
         $('#ipvs-table > tbody').load('{% url 'ipvsadmin:content.ipvsadm.table'%}', function() {
             $('#ipvs-table > tbody > tr > td > a > i[data-weight]').on('click', button_weight_change)
@@ -73,6 +150,7 @@
     // bind event to img
     $('#ipvs-table > tbody > tr > td > a > i[data-weight]').on('click', button_weight_change)
     function button_weight_change(event) {
+        event.preventDefault();
         var button = $(this)   
         var mode = button.data('mode') 
         var port = button.data('port') 

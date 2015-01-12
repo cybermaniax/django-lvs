@@ -70,11 +70,13 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "../static"),
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = ('django.contrib.auth.context_processors.auth',
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.debug',
     'django.core.context_processors.i18n',
     'django.core.context_processors.request',
     'django.core.context_processors.static',
+    'django.contrib.messages.context_processors.messages',
     'djangolvs.menu.menu_context_processor')
 
 IP_VS_FILE = '/proc/net/ip_vs'
