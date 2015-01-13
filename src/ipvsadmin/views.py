@@ -4,7 +4,7 @@ from django.http import JsonResponse,HttpResponseServerError
 
 from ipvsstat.lvs import ipvs
 from ipvsadmin import ipvsadm
-from ipvsadmin.forms import VirtualServerForm
+from ipvsadmin.forms import VirtualServerForm,RealServerForm
 from django.contrib import messages
 
 @require_http_methods(["GET", "POST"])
@@ -31,7 +31,9 @@ def index(request):
     # if a GET (or any other method) we'll create a blank form
     else:
         form = VirtualServerForm()
-    return render(request, 'ipvsadmin/index.html',{'ipvs':ipvs.ipvs(),'vsform':form})
+    
+    rsform = RealServerForm()
+    return render(request, 'ipvsadmin/index.html',{'ipvs':ipvs.ipvs(),'vsform':form,'rsform':rsform})
 
 @require_http_methods(["GET"])
 def ajax_delete_virtual_server(request,mode,port):

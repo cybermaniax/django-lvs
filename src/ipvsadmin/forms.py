@@ -81,4 +81,40 @@ class VirtualServerForm(forms.Form):
             raise forms.ValidationError("No supported vs type"
                         "No supported vs type")
         
+class RealServerForm(forms.Form):
+    __RS_MODE = (
+        ('g', 'Gatewaying (direct routing)'),
+        ('i', 'Tunneling'),
+        ('m', 'Masquerading'),
+    )
+        
+    ip = forms.CharField(label='Ip Address', max_length=100,required=True,validators=[validate_ipv46_address],
+                         widget=forms.TextInput(attrs={'class':'form-control','placeholder':'192.168.1.1'}))
+    
+    port = forms.IntegerField(label='Port',required=True,
+                           min_value=0,
+                           max_value=65535,
+                           widget=forms.TextInput(attrs={'class':'form-control'}))
+    
+    weight = forms.IntegerField(label='Weight',required=False,
+                           min_value=1,
+                           max_value=65535,
+                           widget=forms.TextInput(attrs={'class':'form-control'}))
+    
+    uthreshold = forms.IntegerField(label='Upper connection threshold',required=False,
+                           min_value=0,
+                           max_value=65535,
+                           widget=forms.TextInput(attrs={'class':'form-control'}))
+    
+    lthreshold = forms.IntegerField(label='Lower connection threshold',required=False,
+                           min_value=0,
+                           max_value=65535,
+                           widget=forms.TextInput(attrs={'class':'form-control'}))
+    
+    type = forms.ChoiceField(choices=__RS_MODE, required=True, label="Packet forwarding method",
+                             widget=forms.RadioSelect)
+    
+    
+
+        
     

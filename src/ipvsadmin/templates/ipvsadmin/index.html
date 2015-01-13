@@ -9,6 +9,86 @@
 {% include "ipvsadmin/panel-deletevs.html" %}
 <!--END MODAL CONFIG PORTLET-->
 
+<div id="add-rs-modal-config" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="close">
+                    &times;</button>
+                <h4 class="modal-title">
+                    Add real server</h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel-body pan">
+                    <div class="form-body pal">
+                        <div class="form-group">
+                           <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label for="{{rsform.ip.id_for_label}}" class="control-label">{{rsform.ip.label}}</label>
+                                        {{rsform.ip}}
+                                        {% include "ipvsadmin/error-div.html" with field=rsform.ip only %}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                    <label for="{{rsform.port.id_for_label}}" class="control-label">{{rsform.port.label}}</label>
+                                    {{rsform.port}}
+                                    {% include "ipvsadmin/error-div.html" with field=rsform.port only %}
+                                    </div>
+                                </div>
+                           </div>
+                           <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                    <label for="{{rsform.type.id_for_label}}" class="control-label">{{rsform.type.label}}</label>
+                                    {{rsform.type}}
+                                        {% include "ipvsadmin/error-div.html" with field=rsform.type only %}
+                                    </div>
+                                </div>
+                            </div>
+                           
+                           <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                    <label for="{{rsform.weight.id_for_label}}" class="control-label">{{rsform.weight.label}}</label>
+                                    {{rsform.weight}}
+                                        {% include "ipvsadmin/error-div.html" with field=rsform.weight only %}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                    <label for="{{rsform.lthreshold.id_for_label}}" class="control-label">{{rsform.lthreshold.label}}</label>
+                                    {{rsform.lthreshold}}
+                                        {% include "ipvsadmin/error-div.html" with field=rsform.lthreshold only %}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                    <label for="{{rsform.uthreshold.id_for_label}}" class="control-label">{{rsform.uthreshold.label}}</label>
+                                    {{rsform.uthreshold}}
+                                        {% include "ipvsadmin/error-div.html" with field=rsform.uthreshold only %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    Close</button>
+                <button id="modal-button-add" type="button" class="btn btn-primary">
+                    Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="row mbl">
     <div class="col-lg-6">
         <div class="panel panel-green">
