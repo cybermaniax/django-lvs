@@ -6,106 +6,8 @@
 
 {% block page-content%}
 <!--BEGIN MODAL CONFIG PORTLET-->
-<div id="modal-config" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" data-dismiss="modal" aria-hidden="true" class="close">
-                    &times;</button>
-                <h4 class="modal-title">
-                    Confirm the deletion</h4>
-            </div>
-            <div class="modal-body">
-                <p>
-                    You sure you want to delete?<br/><span id="modal-body-footer"></span></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    Close</button>
-                <button id="modal-button-delete" type="button" class="btn btn-danger">
-                    Delete</button>
-            </div>
-        </div>
-    </div>
-</div>
+{% include "ipvsadmin/panel-deletevs.html" %}
 <!--END MODAL CONFIG PORTLET-->
-<div class="row mbl">
-    <div class="col-lg-6">
-        <div class="panel panel-grey">
-            <div class="panel-heading">Add virtual server</div>
-            <div class="panel-body pan">
-                <form id="add_virtual_server" method="post" action="{% url 'ipvsadmin:index'%}">
-                    {% csrf_token %}
-                    <div class="form-body pal">
-                        <div class="form-group">
-                            <div class="radio">                            
-                                {% for radio in vsform.type%}
-                                    {{ radio.tag }}
-                                    <label for="{{ radio.id_for_label }}" class="radio-inline">
-                                    &nbsp;{{ radio.choice_label }}
-                                    </label>
-                                {% endfor %}
-                            </div>
-                            {% include "ipvsadmin/error-div.html" with field=vsform.type only %}
-                        </div>
-                        <hr />
-                        <div class="form-group">
-                            <div class="row" id="div_{{vsform.ip.id_for_label}}" style="display: none;">
-                                <div class="col-md-8">
-                                    <div class="form-group">
-                                        <label for="{{vsform.ip.id_for_label}}" class="control-label">{{vsform.ip.label}}</label>
-                                        {{vsform.ip}}
-                                        {% include "ipvsadmin/error-div.html" with field=vsform.ip only %}
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                    <label for="{{vsform.port.id_for_label}}" class="control-label">{{vsform.port.label}}</label>
-                                    {{vsform.port}}
-                                    {% include "ipvsadmin/error-div.html" with field=vsform.port only %}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row" id="div_{{vsform.fwmark.id_for_label}}" style="display: none;">
-                                <div class="col-md-8">
-                                    <div class="form-group">
-                                        <label for="{{vsform.fwmark.id_for_label}}" class="control-label">{{vsform.fwmark.label}}</label>
-                                        {{vsform.fwmark}}
-                                        {% include "ipvsadmin/error-div.html" with field=vsform.fwmark only %}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                    <label for="{{vsform.scheduler.id_for_label}}" class="control-label">{{vsform.scheduler.label}}</label>
-                                    {{vsform.scheduler}}
-                                        {% include "ipvsadmin/error-div.html" with field=vsform.scheduler only %}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                    <label for="{{vsform.peristtimeout.id_for_label}}" class="control-label">{{vsform.peristtimeout.label}}</label>
-                                    {{vsform.peristtimeout}}
-                                        {% include "ipvsadmin/error-div.html" with field=vsform.peristtimeout only %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-actions text-right pal">
-                        <button type="submit" class="btn btn-primary">
-                            Add</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <div class="row mbl">
     <div class="col-lg-6">
@@ -130,6 +32,8 @@
         </div>
     </div>
 </div>
+
+{% include "ipvsadmin/panel-addvs.html" %}
 
 <div class="row mbl">
     <div class="col-lg-6">
