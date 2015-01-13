@@ -11,7 +11,7 @@ from django.contrib import messages
 def index(request):
     
     if request.method == 'POST':
-        form = VirtualServerForm(request.POST)
+        form = VirtualServerForm(request.POST,request.FILES,prefix='vs-add')
         if form.is_valid():
             
             if 0 != ipvsadm.add_virtual_server(ip=form['ip'].value(),
@@ -23,16 +23,16 @@ def index(request):
                 messages.error(request, 'Error with ipvsadm execution')
             else:
                 messages.info(request, 'Virtual server added successfully')
-                form = VirtualServerForm()
+                form = VirtualServerForm(prefix='vs-add')
             
             
         return render(request, 'ipvsadmin/index.html',{'ipvs':ipvs.ipvs(),'vsform':form})
 
     # if a GET (or any other method) we'll create a blank form
     else:
-        form = VirtualServerForm()
+        form = VirtualServerForm(prefix='vs-add')
     
-    rsform = RealServerForm()
+    rsform = RealServerForm(prefix='rs-add')
     return render(request, 'ipvsadmin/index.html',{'ipvs':ipvs.ipvs(),'vsform':form,'rsform':rsform})
 
 @require_http_methods(["GET"])

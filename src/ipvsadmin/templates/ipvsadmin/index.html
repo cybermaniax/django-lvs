@@ -23,14 +23,14 @@
                     <div class="form-body pal">
                         <div class="form-group">
                            <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-5">
                                     <div class="form-group">
                                         <label for="{{rsform.ip.id_for_label}}" class="control-label">{{rsform.ip.label}}</label>
                                         {{rsform.ip}}
                                         {% include "ipvsadmin/error-div.html" with field=rsform.ip only %}
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                     <label for="{{rsform.port.id_for_label}}" class="control-label">{{rsform.port.label}}</label>
                                     {{rsform.port}}
@@ -39,7 +39,7 @@
                                 </div>
                            </div>
                            <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-8">
                                     <div class="form-group">
                                     <label for="{{rsform.type.id_for_label}}" class="control-label">{{rsform.type.label}}</label>
                                     {{rsform.type}}
