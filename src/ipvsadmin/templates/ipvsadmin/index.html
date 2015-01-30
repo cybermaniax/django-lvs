@@ -9,7 +9,7 @@
 {% include "ipvsadmin/panel-deletevs.html" %}
 <!--END MODAL CONFIG PORTLET-->
 
-<div id="add-rs-modal-config" class="modal fade">
+<div id="add-rs-modal-config" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Real server modal panel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -18,6 +18,14 @@
                 <h4 class="modal-title">
                     Add real server</h4>
             </div>
+            <form id="add_realserver_server" method="post" action="{% url 'ipvsadmin:index'%}">
+            <input type="hidden" name="realServerForm" value="true">
+            {{rsform.vs_ip}}
+            {{rsform.vs_port}}
+            {{rsform.vs_fwmark}}
+            {{rsform.vs_type}}
+            
+            {% csrf_token %}
             <div class="modal-body">
                 <div class="panel-body pan">
                     <div class="form-body pal">
@@ -81,9 +89,10 @@
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     Close</button>
-                <button id="modal-button-add" type="button" class="btn btn-primary">
+                <button id="modal-button-add" type="submit" class="btn btn-primary">
                     Add</button>
             </div>
+            </form>
         </div>
     </div>
 </div>
@@ -124,7 +133,11 @@
 {% endblock %}
 
 {% block page-footer%}
-<script>    
+<script>   
+    {% if request.method == 'POST' and "realServerForm" in request.POST %}
+        $("#add-rs-modal-config").modal('show');
+    {% endif %}
+    
      $("#add_virtual_server :radio").on('ifChecked',function (event) {
         if('FWM' == this.value){
             $('#div_{{vsform.ip.id_for_label}}').hide('slow')

@@ -5,6 +5,7 @@
             <div class="panel-body pan">
                 <form id="add_virtual_server" method="post" action="{% url 'ipvsadmin:index'%}">
                     {% csrf_token %}
+                    <input type="hidden" name="virtualServerForm" value="true">
                     <div class="form-body pal">
                         <div class="form-group">
                             <div class="radio">                            
