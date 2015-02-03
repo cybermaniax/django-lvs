@@ -56,7 +56,7 @@ ipvsstate_app.factory('dataFactory',['$http',function($http){
     return dataFactory;
 }]);
 
-ipvsstate_app.controller('nicTableCtrl',['$scope','$interval','dataFactory',function($scope,$interval,dataFactory) {
+ipvsstate_app.controller('nicTableCtrl',['$scope','$timeout','dataFactory',function($scope,$timeout,dataFactory) {
 	$scope.nics;
 		
     function getNics(){
@@ -65,16 +65,12 @@ ipvsstate_app.controller('nicTableCtrl',['$scope','$interval','dataFactory',func
         }).error(function (error) {
         	;
         });
+    	$timeout(getNics, 5000);
     }
-	getNics();
-	var stop = $interval( function(){ getNics(); }, 5000);
-    
-    $scope.$on('$destroy', function() {
-        $interval.cancel(stop);
-    });
+	getNics();    
 }]);
 
-ipvsstate_app.controller('sysinfoCtrl',['$scope','$interval','dataFactory',function($scope,$interval,dataFactory) {
+ipvsstate_app.controller('sysinfoCtrl',['$scope','$timeout','dataFactory',function($scope,$timeout,dataFactory) {
 	$scope.sysinfo = [];
 	
 	var success = function(data){
@@ -83,13 +79,13 @@ ipvsstate_app.controller('sysinfoCtrl',['$scope','$interval','dataFactory',funct
 	
     function getSysinfo(){
     	dataFactory.getSystem().success(success);
+    	$timeout( getSysinfo, 5000);
     }
     
     getSysinfo();
-	var stop = $interval( function(){ getSysinfo(); }, 5000);
 }]);
 
-ipvsstate_app.controller('ipvsadminCtrl',['$scope','$interval','dataFactory',function($scope,$interval,dataFactory) {
+ipvsstate_app.controller('ipvsadminCtrl',['$scope','$timeout','dataFactory',function($scope,$timeout,dataFactory) {
 	$scope.ipvsadmin = [];
 	
 	var success = function(data){
@@ -98,9 +94,9 @@ ipvsstate_app.controller('ipvsadminCtrl',['$scope','$interval','dataFactory',fun
 	
     function getSysinfo(){
     	dataFactory.getIpvsadm().success(success);
+    	$timeout( getSysinfo, 5000);
     }
     
     getSysinfo();
-	var stop = $interval( function(){ getSysinfo(); }, 5000);
 }]);
 
