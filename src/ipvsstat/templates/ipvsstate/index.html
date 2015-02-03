@@ -1,11 +1,12 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block page-title %}LVS Dashboard{% endblock %}
 {% block content-title %}LVS Dashboard{% endblock %}
 
-
 {% block page-content%}
-<div id="sum_box" class="row mbl">
+<div ng-app="ipvsstate">
+<div id="sum_box" class="row mbl" ng-controller="sysinfoCtrl">
      <div class="col-sm-6 col-md-3">
          <div class="panel profit db mbm">
              <div class="panel-body">
@@ -13,12 +14,12 @@
                      <i class="icon fa fa-signal"></i>
                  </p>
                  <h4 class="value">
-                     <span id="mem_usage_box">{{ mem_perc_use }}</span><span>%</span></h4>
+                     <span id="mem_usage_box">{$ sysinfo.mem_perc_use || '{{ mem_perc_use }}'$}</span><span>%</span></h4>
                  <p class="description">
                      Memory Usage</p>
                  <div class="progress progress-sm mbn">
-                     <div id="mem_usage_progressbar_box" role="progressbar" aria-valuenow="{{ mem_perc_use }}" aria-valuemin="0" aria-valuemax="100"
-                         style="width: {{ mem_perc_use }}%;" class="progress-bar progress-bar-success">
+                     <div id="mem_usage_progressbar_box" role="progressbar" aria-valuenow="{$ sysinfo.mem_perc_use || '{{ mem_perc_use }}'$}" aria-valuemin="0" aria-valuemax="100"
+                         style="width: {$ sysinfo.mem_perc_use || '{{ mem_perc_use }}'$}%;" class="progress-bar progress-bar-success">
                          <span class="sr-only">{{ mem_perc_use }}% Complete (success)</span></div>
                  </div>
              </div>
@@ -31,12 +32,12 @@
                      <i class="icon fa fa-signal"></i>
                  </p>
                  <h4 class="value">
-                     <span id="cpu_usage_box">{{ cpu_usage }}</span><span>%</span></h4>
+                     <span id="cpu_usage_box">{$ sysinfo.cpu_usage || 'cpu_usage'$}</span><span>%</span></h4>
                  <p class="description">
                      CPU Usage</p>
                  <div class="progress progress-sm mbn">
-                     <div id="cpu_usage_progressbar_box" role="progressbar" aria-valuenow="{{ cpu_usage }}" aria-valuemin="0" aria-valuemax="100"
-                         style="width: {{ cpu_usage }}%;" class="progress-bar progress-bar-info">
+                     <div id="cpu_usage_progressbar_box" role="progressbar" aria-valuenow="{$ sysinfo.cpu_usage || '{{ cpu_usage }}'$}" aria-valuemin="0" aria-valuemax="100"
+                         style="width: {$ sysinfo.cpu_usage || '{{ cpu_usage }}'$}%;" class="progress-bar progress-bar-info">
                          <span class="sr-only">100% Complete (success)</span></div>
                  </div>
              </div>
@@ -62,8 +63,29 @@
                         <th>InActConn</th>
                     </tr>
                     </thead>
-                    <tbody>
-                        {% include "ipvsstate/ipvsadminboad.html" %}
+                    <tbody ng-controller="ipvsadminCtrl">
+                        <tr ng-show="0 == ipvsadmin.ipvs.length">
+                            <td colspan="6">
+                                No servers
+                            </td>
+                        </tr>
+                        <tr data-ng-repeat-start="ipvs in ipvsadmin.ipvs" ng-class-odd="'success'" ng-class-even="'warning'">
+                            <td colspan="6"> {$ipvs.port$} {$ipvs.mode$} {$ipvs.persistent$} {$ipvs.persistent_timeout$} {$ipvs.flags$}</td>
+                        </tr>
+                        <tr ng-show="0 == ipvs.realserv.length">
+                            <td></td>
+                            <td colspan="5">
+                                No real servers
+                            </td>
+                        </tr>                        
+                        <tr data-ng-repeat-end ng-repeat="iprs in ipvs.realserv">
+                            <td></td>
+                            <td>{$iprs.ip$}:{$iprs.port$}</td>
+                            <td>{$iprs.forward_mode$}</td>
+                            <td style="text-align: center;">{$iprs.weight$}</td>
+                            <td style="text-align: right;">{$iprs.active_conn$}</td>
+                            <td style="text-align: right;">{$iprs.inact_conn$}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -81,7 +103,7 @@
                             <p>
                                 <strong>Distribution: </strong>{{distname}} {{distname_version}}</p>
                             <p>
-                                <strong>Uptime: </strong id="uptime">{{uptime}}</p>
+                                <strong>Uptime: </strong id="uptime">{$sysinfo.uptime || '{{uptime}}'$}</p>
                             <p>
                                 <strong class="mrs">Arch:</strong><span class="label label-green mrs">{{os}}</span><span class="label label-green mrs">{{machine}}</span><span class="label label-green mrs">{{os_release}}</span></p>
                         </div>
@@ -89,21 +111,21 @@
                     <div class="row text-center divider">
                         <div class="col-xs-12 col-sm-4 emphasis">
                             <h2>
-                                <strong id="loadavg_1m">{{ loadavg_1m }}</strong></h2>
+                                <strong id="loadavg_1m">{$sysinfo.loadavg_1m || '{{loadavg_1m}}'$}</strong></h2>
                             <p>
                                 <small>Loadavg 1 min</small>
                             </p>
                         </div>
                         <div class="col-xs-12 col-sm-4 emphasis">
                             <h2>
-                                <strong id="loadavg_5m">{{ loadavg_5m }}</strong></h2>
+                                <strong id="loadavg_5m">{$sysinfo.loadavg_5m || '{{loadavg_5m}}'$}</strong></h2>
                             <p>
                                 <small>Loadavg 5 min</small>
                             </p>
                         </div>
                         <div class="col-xs-12 col-sm-4 emphasis">
                             <h2>
-                                <strong id="loadavg_15m">{{ loadavg_15m }}</strong></h2>
+                                <strong id="loadavg_15m">{$sysinfo.loadavg_15m || '{{loadavg_15m}}'$}</strong></h2>
                             <p>
                                 <small>Loadavg 15 min</small>
                             </p>
@@ -131,11 +153,18 @@
                         <th>Bytes-recv/sec</th>
                     </tr>
                     </thead>
-                    <tbody>
-                        <tr>
+                    <tbody ng-controller="nicTableCtrl">
+                        <tr ng-show="nics === undefined">
                             <td colspan="5" style="text-align: center;">
                                 <i class="fa fa-spinner fa-spin" ></i>
                             </td>
+                        </tr>
+                        <tr ng-repeat="(key, value) in nics" ng-class-odd="'success'" ng-class-even="'warning'">
+                            <th>{$key$}</th>
+                            <th>{$value[0]| bytes:2$}</th>
+                            <th>{$value[2]| bytes:2$}</th>
+                            <th>{$value[1]| bytes:2$}</th>
+                            <th>{$value[3]| bytes:2$}</th>
                         </tr>
                     </tbody>
                 </table>
@@ -143,81 +172,10 @@
         </div>
     </div>
 </div>
+<div>
 {% endblock %}
 
 {% block page-footer%}
-    <script type="text/javascript">
-        function bytesToSize(bytes) {
-            var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-            if (bytes == 0) return '0';
-                var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-            return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
-        };
-    
-        function dashboard(json_data){
-            $('#loadavg_15m').html(json_data.loadavg_15m);
-            $('#loadavg_5m').html(json_data.loadavg_5m);
-            $('#loadavg_1m').html(json_data.loadavg_1m);
-            $('#uptime').html(json_data.uptime);
-            // memory           
-            $('#mem_usage_box').html(json_data.mem_perc_use);
-            $('#mem_usage_progressbar_box').css('width',json_data.mem_perc_use+'%');
-            $('#mem_usage_progressbar_box').attr('aria-valuenow',json_data.mem_perc_use);
-            
-            // cpu            
-            $('#cpu_usage_box').html(json_data.cpu_usage);
-            $('#cpu_usage_progressbar_box').css('width',json_data.cpu_usage+'%');
-            $('#cpu_usage_progressbar_box').attr('aria-valuenow',json_data.cpu_usage);
-        }
-    
-        function ipvsadmin_table(){
-            $('#ipvs-table > tbody').load('{% url 'ipvsstate:content.ipvsadm.table'%}')
-            setTimeout(ipvsadmin_table, 2000);
-        }
-        setTimeout(ipvsadmin_table, 2000);
-    
-        function ajax_dashboard(){
-            $.ajax({url: '{% url 'ipvsstate:ajax.dashboard'%}',
-                    type: 'GET',
-                    dataType: 'json',
-                    timeout: 1000,
-                    success: function(json_data){          
-                                dashboard(json_data);
-                            }
-            });
-          setTimeout(ajax_dashboard, 4000);
-        }
-        setTimeout(ajax_dashboard, 4000);
-          
-        function nic_table(json_data){
-            $('#nic-table > tbody').empty();
-            for(var name in json_data) {
-                stat_array = json_data[name];
-                 newRow = "<tr>" +
-                            "<td>"+name+"</td>" +
-                            "<td>"+bytesToSize(stat_array[0])+"</td>" +
-                            "<td>"+bytesToSize(stat_array[2])+"</td>" +
-                            "<td>"+bytesToSize(stat_array[1])+"</td>" +
-                            "<td>"+bytesToSize(stat_array[3])+"</td>" +
-                          "</tr>";
-                
-                $('#nic-table > tbody').append(newRow);
-            }
-        }
-        
-        function ajax_nic_table(){
-            $.ajax({url: '{% url 'ipvsstate:ajax.nic_dashboard'%}',
-                    type: 'GET',
-                    dataType: 'json',
-                    timeout: 2000,
-                    success: function(json_data){          
-                        nic_table(json_data);
-                    }
-            });
-          setTimeout(ajax_nic_table, 5000);
-        }
-        
-        ajax_nic_table();
-    </script>
+    <script src="{% static "ipvsstat/script/angular-app.js"%}"></script>
 {% endblock %}
 

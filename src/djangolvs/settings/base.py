@@ -14,7 +14,7 @@ TEMPLATE_DEBUG = False
 ALLOWED_HOSTS = []
 
 TEMPLATE_DIRS = (
-        os.path.join(BASE_DIR, '../templates/'),
+        os.path.join(BASE_DIR, 'templates/'),
 )
 
 # Application definition
@@ -26,6 +26,7 @@ PREREQ_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djangular',
 )
 
 
@@ -67,7 +68,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "../static"),
+    os.path.join(BASE_DIR, "static"),
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
